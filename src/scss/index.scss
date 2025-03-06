@@ -1,0 +1,18 @@
+body {
+  font-family: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+.wrapper {
+  padding: 8px 16px;
+  padding-bottom: 0;
+}
+
+.line {
+  border: 0;
+  height: 1px;
+  background-color: #c3c3c6;
+  margin: 0;
+}
