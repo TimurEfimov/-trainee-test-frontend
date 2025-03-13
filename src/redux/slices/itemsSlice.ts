@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
 
@@ -55,6 +55,22 @@ export const itemsSlice = createSlice({
     setItems(state, action) {
       state.items = action.payload;
     },
+    sortItems(state, action: PayloadAction<string>) {
+      const sortType = action.payload;
+      if (sortType === "alphabet") {
+        state.items = state.items.slice().sort((a, b) => {
+          const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+          const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
+          return nameA.localeCompare(nameB);
+        });
+      } else if (sortType === "birthday") {
+        state.items = state.items.slice().sort((a, b) => {
+          const dateA = new Date(a.birthday);
+          const dateB = new Date(b.birthday);
+          return dateA.getTime() - dateB.getTime();
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -78,6 +94,6 @@ export const itemsSlice = createSlice({
 
 export const itemsData = (state: RootState) => state.items;
 
-export const {} = itemsSlice.actions;
+export const { setItems, sortItems } = itemsSlice.actions;
 
 export default itemsSlice.reducer;

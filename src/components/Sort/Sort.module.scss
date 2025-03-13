@@ -1,0 +1,72 @@
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  opacity: 0.3;
+  z-index: 10;
+}
+
+.filter {
+  position: fixed;
+  background-color: white;
+  width: 373px;
+  height: 192px;
+  border-radius: 20px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 20;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  margin: 24px 0 16px 0;
+}
+
+.close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.radio {
+  padding: 20px 16px;
+
+  & input[type="radio"] {
+    display: none;
+  }
+
+  & label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 36px;
+    margin-right: 0;
+    font-size: 16px;
+    font-weight: 500;
+    user-select: none;
+  }
+
+  & label:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: -4px;
+    width: 24px;
+    height: 24px;
+    background: url("../../assets/unselected.svg") 0 0 no-repeat !important;
+  }
+
+  & input[type="radio"]:checked + label:before {
+    background: url("../../assets/selected.svg") 0 0 no-repeat !important;
+  }
+}

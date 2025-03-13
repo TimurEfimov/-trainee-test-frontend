@@ -1,15 +1,19 @@
 import React from "react";
-import { Header } from "./components/Header/Header";
 import { RootState, useAppDispatch } from "./redux/store";
-import { fetchItems } from "./redux/slices/itemsSlice";
+import { fetchItems, sortItems } from "./redux/slices/itemsSlice";
 import { Route, Routes } from "react-router";
 import { Home } from "./pages/Home";
 import { useSelector } from "react-redux";
+import { Profile } from "./pages/Profile/Profile";
+import { MainLayout } from "./layouts/MainLayout";
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const category = useSelector(
     (state: RootState) => state.filters.category.value
+  );
+  const selectedSort = useSelector(
+    (state: RootState) => state.filters.selectedSort
   );
 
   const getItems = async () => {
@@ -20,17 +24,17 @@ export const App: React.FC = () => {
     getItems();
   }, [category]);
 
+  React.useEffect(() => {
+    dispatch(sortItems(selectedSort));
+  }, [selectedSort, dispatch]);
+
   return (
-    <>
-      <div className="wrapper">
-        <Header />
-      </div>
-      <hr className="line" />
-      <div className="wrapper">
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </div>
-    </>
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+      </Route>
+
+      <Route path="/profile/:id" element={<Profile />} />
+    </Routes>
   );
 };

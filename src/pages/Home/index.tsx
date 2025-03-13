@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { item, itemsData } from "../../redux/slices/itemsSlice";
 import { ItemBlock } from "../../components/ItemBlock/ItemBlock";
 import Skeleton from "../../components/ItemBlock/Skeleton";
+import { Sort } from "../../components/Sort/Sort";
+import { RootState } from "../../redux/store";
 
 interface itemsState {
   items: item[];
@@ -12,13 +14,18 @@ interface itemsState {
 
 export const Home: React.FC = () => {
   const { items, status }: itemsState = useSelector(itemsData);
+  const isOpen = useSelector((state: RootState) => state.filters.isOpen);
 
   const skeletons = [...new Array(10)].map((_, i) => <Skeleton key={i} />);
   const users = items.map((obj) => <ItemBlock {...obj} key={obj.id} />);
 
   return (
-    <div className={styles.contentItems}>
-      {status === "loading" ? skeletons : users}
-    </div>
+    <>
+      {isOpen && <Sort />}
+
+      <div className={styles.contentItems}>
+        {status === "loading" ? skeletons : users}
+      </div>
+    </>
   );
 };
