@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../store";
+import { setSelectedSort } from "./filterSlice";
 
 export enum Status {
   LOADING = "loading",
@@ -31,13 +32,15 @@ interface paramsFilter {
 
 export const fetchItems = createAsyncThunk(
   "items/fetchItemsStatus",
-  async (params: paramsFilter) => {
+  async (params: paramsFilter, thunkAPI) => {
     const { category } = params;
     const { data } = await axios({
       method: "get",
       url: `https://stoplight.io/mocks/kode-frontend-team/koder-stoplight/86566464/users?__example=${category}`,
       headers: { "Content-Type": "application/json" },
     });
+
+    thunkAPI.dispatch(setSelectedSort("alphabet"));
 
     return data;
   }
@@ -64,9 +67,19 @@ export const itemsSlice = createSlice({
           return nameA.localeCompare(nameB);
         });
       } else if (sortType === "birthday") {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+
         state.items = state.items.slice().sort((a, b) => {
           const dateA = new Date(a.birthday);
           const dateB = new Date(b.birthday);
+
+          dateA.setFullYear(currentYear);
+          dateB.setFullYear(currentYear);
+
+          if (dateA < today) dateA.setFullYear(currentYear + 1);
+          if (dateB < today) dateB.setFullYear(currentYear + 1);
+
           return dateA.getTime() - dateB.getTime();
         });
       }
@@ -83,6 +96,12 @@ export const itemsSlice = createSlice({
       .addCase(fetchItems.fulfilled, (state, action) => {
         state.items = action.payload.items;
         state.status = Status.SUCCESS;
+
+        state.items = state.items.slice().sort((a, b) => {
+          const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
+          const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
+          return nameA.localeCompare(nameB);
+        });
       })
 
       .addCase(fetchItems.rejected, (state) => {

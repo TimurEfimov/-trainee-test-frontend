@@ -25,6 +25,7 @@ export const Sort: React.FC = () => {
 
   const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedSort(event.target.value));
+    dispatch(setIsOpen(false));
   };
 
   const closeFilters = () => {
