@@ -1,10 +1,25 @@
 import React from "react";
 import styles from "./Input.module.scss";
 import { useDispatch } from "react-redux";
-import { setIsOpen } from "../../redux/slices/filterSlice";
+import { setIsOpen, setSearchValue } from "../../redux/slices/filterSlice";
+import debounce from "lodash.debounce";
 
 export const Input: React.FC = () => {
   const dispatch = useDispatch();
+  const [value, setValue] = React.useState("");
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const updateSearchValue = React.useCallback(
+    debounce((str: string) => {
+      dispatch(setSearchValue(str));
+    }, 500),
+    []
+  );
+
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    updateSearchValue(event.target.value);
+  };
 
   function openFilters() {
     dispatch(setIsOpen(true));
@@ -39,6 +54,9 @@ export const Input: React.FC = () => {
         />
       </svg>
       <input
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         type="text"
         placeholder="Введи имя, тег, почту..."

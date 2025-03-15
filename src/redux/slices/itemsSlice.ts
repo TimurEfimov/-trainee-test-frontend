@@ -23,6 +23,7 @@ export interface item {
 
 interface itemsState {
   items: item[];
+  filteredItems: item[];
   status: Status;
 }
 
@@ -48,6 +49,7 @@ export const fetchItems = createAsyncThunk(
 
 const initialState: itemsState = {
   items: [],
+  filteredItems: [],
   status: Status.LOADING,
 };
 
@@ -61,7 +63,7 @@ export const itemsSlice = createSlice({
     sortItems(state, action: PayloadAction<string>) {
       const sortType = action.payload;
       if (sortType === "alphabet") {
-        state.items = state.items.slice().sort((a, b) => {
+        state.filteredItems = state.items.slice().sort((a, b) => {
           const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
           const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
           return nameA.localeCompare(nameB);
@@ -70,7 +72,7 @@ export const itemsSlice = createSlice({
         const today = new Date();
         const currentYear = today.getFullYear();
 
-        state.items = state.items.slice().sort((a, b) => {
+        state.filteredItems = state.items.slice().sort((a, b) => {
           const dateA = new Date(a.birthday);
           const dateB = new Date(b.birthday);
 
@@ -84,6 +86,16 @@ export const itemsSlice = createSlice({
         });
       }
     },
+    sortSearch(state, action: PayloadAction<string>) {
+      const search = action.payload.trim();
+      if (!search) return;
+      state.filteredItems = state.filteredItems.filter(
+        (item) =>
+          item.firstName.toLowerCase().includes(search.toLowerCase()) ||
+          item.lastName.toLowerCase().includes(search.toLowerCase()) ||
+          item.userTag.toLowerCase().includes(search.toLowerCase())
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -91,13 +103,16 @@ export const itemsSlice = createSlice({
       .addCase(fetchItems.pending, (state) => {
         state.status = Status.LOADING;
         state.items = [];
+        state.filteredItems = [];
       })
 
       .addCase(fetchItems.fulfilled, (state, action) => {
         state.items = action.payload.items;
+        state.filteredItems = action.payload.items;
+
         state.status = Status.SUCCESS;
 
-        state.items = state.items.slice().sort((a, b) => {
+        state.filteredItems = state.items.slice().sort((a, b) => {
           const nameA = `${a.firstName} ${a.lastName}`.toUpperCase();
           const nameB = `${b.firstName} ${b.lastName}`.toUpperCase();
           return nameA.localeCompare(nameB);
@@ -107,12 +122,13 @@ export const itemsSlice = createSlice({
       .addCase(fetchItems.rejected, (state) => {
         state.status = Status.ERROR;
         state.items = [];
+        state.filteredItems = [];
       });
   },
 });
 
 export const itemsData = (state: RootState) => state.items;
 
-export const { setItems, sortItems } = itemsSlice.actions;
+export const { setItems, sortItems, sortSearch } = itemsSlice.actions;
 
 export default itemsSlice.reducer;

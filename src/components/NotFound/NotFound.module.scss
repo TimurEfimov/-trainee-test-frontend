@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 80vh;
+  gap: 10px;
+
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px;
+    opacity: 0.6;
+  }
+}

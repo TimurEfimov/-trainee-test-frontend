@@ -8,6 +8,7 @@ export interface FilterState {
   };
   isOpen: boolean;
   selectedSort: string;
+  searchValue: string;
 }
 
 const initialState: FilterState = {
@@ -17,6 +18,7 @@ const initialState: FilterState = {
   },
   isOpen: false,
   selectedSort: "alphabet",
+  searchValue: "",
 };
 
 export const filterSlice = createSlice({
@@ -25,6 +27,9 @@ export const filterSlice = createSlice({
   reducers: {
     setCategory(state, action) {
       state.category = action.payload;
+    },
+    setSearchValue(state, action) {
+      state.searchValue = action.payload;
     },
     setIsOpen(state, action) {
       state.isOpen = action.payload;
@@ -37,6 +42,7 @@ export const filterSlice = createSlice({
 
 export const filters = (state: RootState) => state.filters;
 
-export const { setCategory, setIsOpen, setSelectedSort } = filterSlice.actions;
+export const { setCategory, setIsOpen, setSelectedSort, setSearchValue } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;
