@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "../store";
 import { setSelectedSort } from "./filterSlice";
+import { fetchWithCache } from "../slices/apiCache";
 
 export enum Status {
   LOADING = "loading",
@@ -35,11 +35,10 @@ export const fetchItems = createAsyncThunk(
   "items/fetchItemsStatus",
   async (params: paramsFilter, thunkAPI) => {
     const { category } = params;
-    const { data } = await axios({
-      method: "get",
-      url: `https://stoplight.io/mocks/kode-frontend-team/koder-stoplight/86566464/users?__example=${category}`,
-      headers: { "Content-Type": "application/json" },
-    });
+    const data = await fetchWithCache(
+      `https://stoplight.io/mocks/kode-frontend-team/koder-stoplight/86566464/users?__example=${category}`,
+      {}
+    );
 
     thunkAPI.dispatch(setSelectedSort("alphabet"));
 
@@ -87,13 +86,12 @@ export const itemsSlice = createSlice({
       }
     },
     sortSearch(state, action: PayloadAction<string>) {
-      const search = action.payload.trim();
+      const search = action.payload.toLowerCase().trim();
       if (!search) return;
-      state.filteredItems = state.filteredItems.filter(
-        (item) =>
-          item.firstName.toLowerCase().includes(search.toLowerCase()) ||
-          item.lastName.toLowerCase().includes(search.toLowerCase()) ||
-          item.userTag.toLowerCase().includes(search.toLowerCase())
+      state.filteredItems = state.filteredItems.filter((item) =>
+        (item.firstName + " " + item.lastName + " " + item.userTag)
+          .toLowerCase()
+          .includes(search)
       );
     },
   },

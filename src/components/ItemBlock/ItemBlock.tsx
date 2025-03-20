@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./ItemBlock.module.scss";
 import { item } from "../../redux/slices/itemsSlice";
 import { Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { setSearchValue } from "../../redux/slices/filterSlice";
 
 export const ItemBlock: React.FC<item> = ({
   avatarUrl,
@@ -11,8 +13,14 @@ export const ItemBlock: React.FC<item> = ({
   position,
   id,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleSearch = () => {
+    dispatch(setSearchValue(""));
+  };
+
   return (
-    <Link to={`profile/${id}`}>
+    <Link to={`profile/${id}`} onClick={handleSearch}>
       <div className={styles.person}>
         <img src={avatarUrl} alt="photo" className={styles.img} />
         <div className={styles.info}>

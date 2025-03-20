@@ -1,20 +1,41 @@
 import React from "react";
-import styles from "./Profile.module.scss";
-import arrow from "../../assets/arrow.svg";
+import { useSelector } from "react-redux";
+import { itemsData } from "../../redux/slices/itemsSlice";
 import { Link, useParams } from "react-router";
+import arrow from "../../assets/arrow.svg";
 import call from "../../assets/call.svg";
 import star from "../../assets/star.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+
+import styles from "./Profile.module.scss";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
-  const users = useSelector((state: RootState) => state.items.items);
+  const { status, items } = useSelector(itemsData);
 
-  const user = users.find((user) => user.id === id);
+  const user = items.find((user) => user.id === id);
 
-  if (!user) {
-    return <div>Пользователь не найден</div>;
+  if (status === "loading") {
+    return (
+      <div className={styles.center}>
+        <div className={styles.lds_dual_ring}></div>
+      </div>
+    );
+  }
+
+  if (!user && status === "success") {
+    return (
+      <div className={styles.center}>
+        <h1>User is not found</h1>
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <div className={styles.center}>
+        <h1>Error loading user data</h1>
+      </div>
+    );
   }
 
   return (
@@ -24,26 +45,26 @@ export const Profile: React.FC = () => {
           <img src={arrow} alt="" className={styles.arrow} />
         </Link>
         <div className={styles.content}>
-          <img src={user.avatarUrl} alt="photo" />
+          <img src={user?.avatarUrl} alt="photo" />
           <div>
             <h1>
-              {user.firstName} {user.lastName}
+              {user?.firstName} {user?.lastName}
             </h1>
-            <span>{user.userTag}</span>
+            <span>{user?.userTag}</span>
           </div>
-          <p>{user.position}</p>
+          <p>{user?.position}</p>
         </div>
       </div>
       <div className={styles.additional}>
         <div>
           <img src={star} alt="star" />
           <div className={styles.age}>
-            <p>{user.birthday}</p>
+            <p>{user?.birthday}</p>
           </div>
         </div>
         <div>
           <img src={call} alt="call" />
-          <a href={`tel:${user.phone}`}>{user.phone}</a>
+          <a href={`tel:${user?.phone}`}>{user?.phone}</a>
         </div>
       </div>
     </>
