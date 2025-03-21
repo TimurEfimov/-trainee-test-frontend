@@ -1,8 +1,10 @@
 import React from "react";
 import style from "./Categories.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { setCategory } from "../../redux/slices/filterSlice";
+import {
+  filters,
+  setCategory,
+} from "../../redux/slices/filterSlice";
 
 const list = [
   {
@@ -59,25 +61,20 @@ const list = [
   },
 ];
 
-interface filterCategory {
-  title: string;
-  value: string;
-}
-
 export const Categories: React.FC = () => {
   const dispatch = useDispatch();
-  const category = useSelector((state: RootState) => state.filters.category);
+  const { category } = useSelector(filters);
 
-  function setActiveIndex(item: filterCategory) {
-    dispatch(setCategory(item));
+  function setActiveIndex(value: string) {
+    dispatch(setCategory(value));
   }
 
   return (
     <ul className={style.ul}>
       {list.map((item, i) => (
         <li
-          className={category.title === item.title ? style.active : style.li}
-          onClick={() => setActiveIndex(item)}
+          className={category === item.value ? style.active : style.li}
+          onClick={() => setActiveIndex(item.value)}
           key={i}
         >
           {item.title}

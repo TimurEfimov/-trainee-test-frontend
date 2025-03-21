@@ -1,12 +1,17 @@
 import React from "react";
 import styles from "./Input.module.scss";
-import { useDispatch } from "react-redux";
-import { setIsOpen, setSearchValue } from "../../redux/slices/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  filters,
+  setIsOpen,
+  setSearchValue,
+} from "../../redux/slices/filterSlice";
 import debounce from "lodash.debounce";
 
 export const Input: React.FC = () => {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState("");
+  const { searchValue } = useSelector(filters);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const updateSearchValue = React.useCallback(
@@ -17,9 +22,18 @@ export const Input: React.FC = () => {
   );
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    updateSearchValue(event.target.value);
+    const newValue = event.target.value;
+    setValue(newValue);
+    updateSearchValue(newValue);
   };
+
+  React.useEffect(() => {
+    setValue(searchValue);
+
+    return () => {
+      updateSearchValue.cancel();
+    };
+  }, [searchValue, updateSearchValue]);
 
   function openFilters() {
     dispatch(setIsOpen(true));

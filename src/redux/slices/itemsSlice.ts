@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { setSelectedSort } from "./filterSlice";
 import { fetchWithCache } from "../slices/apiCache";
 
 export enum Status {
@@ -33,14 +32,12 @@ interface paramsFilter {
 
 export const fetchItems = createAsyncThunk(
   "items/fetchItemsStatus",
-  async (params: paramsFilter, thunkAPI) => {
+  async (params: paramsFilter) => {
     const { category } = params;
     const data = await fetchWithCache(
       `https://stoplight.io/mocks/kode-frontend-team/koder-stoplight/86566464/users?__example=${category}`,
       {}
     );
-
-    thunkAPI.dispatch(setSelectedSort("alphabet"));
 
     return data;
   }
