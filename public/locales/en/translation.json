@@ -1,0 +1,47 @@
+{
+  "title": "Search",
+  "search": "Enter name, tag, email...",
+  "categories": {
+    "all": "All",
+    "android": "Android",
+    "ios": "iOS",
+    "design": "Design",
+    "management": "Management",
+    "qa": "QA",
+    "back_office": "Back Office",
+    "frontend": "Frontend",
+    "hr": "HR",
+    "pr": "PR",
+    "backend": "Backend",
+    "support": "Support",
+    "analytics": "Analytics"
+  },
+  "sort": {
+    "title": "Sorting",
+    "alphabet": "By alphabet",
+    "birthday": "By birthday"
+  },
+  "status": {
+    "loading": "Just a second, loading...",
+    "error": "Unable to update data. Please check your internet connection."
+  },
+  "monthNames": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+  "user": {
+    "userNotFound": "User is not found",
+    "errorLoadingData": "Error loading user data",
+    "yearsOld": "years old"
+  }
+}

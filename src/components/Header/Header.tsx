@@ -5,9 +5,12 @@ import { Input } from "../Input/Input";
 import { Categories } from "../Categories/Categories";
 import { useSelector } from "react-redux";
 import { itemsData } from "../../redux/slices/itemsSlice";
+import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export const Header: React.FC = () => {
   const { status } = useSelector(itemsData);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -18,19 +21,20 @@ export const Header: React.FC = () => {
           [styles.error]: status === "error",
         })}
       >
-        <h1 className={styles.title}>Поиск</h1>
+        <div className={styles.main}>
+          <h1 className={styles.title}>{t("title")}</h1>
+          <LanguageSwitcher />
+        </div>
         {status === "success" ? (
           <>
             <Input />
           </>
         ) : status === "loading" ? (
           <>
-            <h2 className={styles.desc}>Секундочку, гружусь...</h2>
+            <h2 className={styles.desc}>{t("status.loading")}</h2>
           </>
         ) : status === "error" ? (
-          <h2 className={styles.desc}>
-            Не могу обновить данные. Проверь соединение с интернетом.
-          </h2>
+          <h2 className={styles.desc}>{t("status.error")}</h2>
         ) : (
           ""
         )}

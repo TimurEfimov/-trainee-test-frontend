@@ -4,20 +4,22 @@ import close from "../../assets/close.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsOpen, setSelectedSort } from "../../redux/slices/filterSlice";
 import { RootState } from "../../redux/store";
-
-const list = [
-  {
-    title: "По алфавиту",
-    filter: "alphabet",
-  },
-  {
-    title: "По дню рождения",
-    filter: "birthday",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const Sort: React.FC = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  const list = [
+    {
+      title: t("sort.alphabet"),
+      filter: "alphabet",
+    },
+    {
+      title: t("sort.birthday"),
+      filter: "birthday",
+    },
+  ];
 
   const selectedSort = useSelector(
     (state: RootState) => state.filters.selectedSort
@@ -36,7 +38,7 @@ export const Sort: React.FC = () => {
     <>
       <div className={styles.drawer} />
       <div className={styles.filter}>
-        <h1 className={styles.title}>Сортировка</h1>
+        <h1 className={styles.title}>{t("sort.title")}</h1>
         <img
           src={close}
           alt="close"

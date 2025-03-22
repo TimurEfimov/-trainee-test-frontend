@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import "./scss/reset.scss";
 import "./scss/index.scss";
 
+import "./i18n.ts";
+
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>

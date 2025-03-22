@@ -8,11 +8,14 @@ import {
 } from "../../redux/slices/filterSlice";
 import debounce from "lodash.debounce";
 
+import { useTranslation } from "react-i18next";
+
 export const Input: React.FC = () => {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState("");
   const { searchValue } = useSelector(filters);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   const updateSearchValue = React.useCallback(
     debounce((str: string) => {
@@ -73,7 +76,7 @@ export const Input: React.FC = () => {
         onChange={onChangeInput}
         className={styles.input}
         type="text"
-        placeholder="Введи имя, тег, почту..."
+        placeholder={t("search")}
       />
     </div>
   );

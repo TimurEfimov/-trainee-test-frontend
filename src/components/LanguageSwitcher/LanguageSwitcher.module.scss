@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  gap: 6px;
+  padding: 0 12px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.active {
+  opacity: 1;
+}

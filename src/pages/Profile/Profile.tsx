@@ -1,18 +1,42 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { itemsData } from "../../redux/slices/itemsSlice";
-import { Link, useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import arrow from "../../assets/arrow.svg";
 import call from "../../assets/call.svg";
 import star from "../../assets/star.svg";
 
 import styles from "./Profile.module.scss";
+import { useTranslation } from "react-i18next";
+
+const calculateAge = (birthday: string) => {
+  const today = new Date();
+  const birthDate = new Date(birthday);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+};
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
   const { status, items } = useSelector(itemsData);
+  const { t } = useTranslation();
 
   const user = items.find((user) => user.id === id);
+
+  const [year, month, day] = user?.birthday.split("-") || ["", "", ""];
+
+  const monthName = t(`monthNames.${parseInt(month) - 1}`).toLowerCase();
+  const formatedBirthday = `${day} ${monthName} ${year}`;
+  const age = user?.birthday ? calculateAge(user.birthday) : null;
 
   if (status === "loading") {
     return (
@@ -25,7 +49,7 @@ export const Profile: React.FC = () => {
   if (!user && status === "success") {
     return (
       <div className={styles.center}>
-        <h1>User is not found</h1>
+        <h1>{t("user.userNotFound")}</h1>
       </div>
     );
   }
@@ -33,7 +57,7 @@ export const Profile: React.FC = () => {
   if (status === "error") {
     return (
       <div className={styles.center}>
-        <h1>Error loading user data</h1>
+        <h1>{t("user.errorLoadingData")}</h1>
       </div>
     );
   }
@@ -59,7 +83,10 @@ export const Profile: React.FC = () => {
         <div>
           <img src={star} alt="star" />
           <div className={styles.age}>
-            <p>{user?.birthday}</p>
+            <p>{formatedBirthday}</p>
+            <span>
+              {age} {t("user.yearsOld")}
+            </span>
           </div>
         </div>
         <div>
