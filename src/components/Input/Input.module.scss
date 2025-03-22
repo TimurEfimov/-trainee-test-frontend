@@ -15,10 +15,15 @@
   border-radius: 16px;
   font-size: 15px;
   font-weight: 500;
-  background-color: #f7f7f8;
+  background-color: var(--input-color);
   border: none;
   outline: none;
   caret-color: #6534ff;
+  color: var(--text-color);
+
+  &::placeholder {
+    color: var(--text-color);
+  }
 }
 
 .icon {

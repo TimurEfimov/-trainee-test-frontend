@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppDispatch } from "./redux/store";
+import { RootState, useAppDispatch } from "./redux/store";
 import { fetchItems, sortItems, sortSearch } from "./redux/slices/itemsSlice";
 import { Route, Routes } from "react-router";
 import { Home } from "./pages/Home";
@@ -18,6 +18,7 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selectedSort, searchValue, paramsCategory, category } =
     useSelector(filters);
+  const theme = useSelector((state: RootState) => state.theme.theme);
 
   const getItems = async () => {
     await dispatch(fetchItems({ category }));
@@ -58,13 +59,18 @@ export const App: React.FC = () => {
     }
   }, [selectedSort, searchValue]);
 
+  React.useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
   return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-      </Route>
+    <div>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+        </Route>
 
-      <Route path="/profile/:id" element={<Profile />} />
-    </Routes>
+        <Route path="/profile/:id" element={<Profile />} />
+      </Routes>
+    </div>
   );
 };

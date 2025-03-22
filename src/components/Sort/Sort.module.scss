@@ -11,10 +11,11 @@
 
 .filter {
   position: fixed;
-  background-color: white;
-  width: 373px;
+  background-color: var(--background-color);
+  max-width: 373px;
   height: 192px;
   border-radius: 20px;
+  padding: 10px;
   top: 0;
   bottom: 0;
   left: 0;

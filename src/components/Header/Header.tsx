@@ -3,14 +3,20 @@ import styles from "./Header.module.scss";
 import classNames from "classnames";
 import { Input } from "../Input/Input";
 import { Categories } from "../Categories/Categories";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { itemsData } from "../../redux/slices/itemsSlice";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { toggleTheme } from "../../redux/slices/themeSlice";
 
 export const Header: React.FC = () => {
+  const dispatch = useDispatch();
   const { status } = useSelector(itemsData);
   const { t } = useTranslation();
+
+  const handleTheme = () => {
+    dispatch(toggleTheme());
+  };
 
   return (
     <>
@@ -23,7 +29,15 @@ export const Header: React.FC = () => {
       >
         <div className={styles.main}>
           <h1 className={styles.title}>{t("title")}</h1>
-          <LanguageSwitcher />
+          <div className={styles.params}>
+            <img
+              src="/images/theme.png"
+              alt="theme"
+              className={styles.theme}
+              onClick={handleTheme}
+            />
+            <LanguageSwitcher />
+          </div>
         </div>
         {status === "success" ? (
           <>

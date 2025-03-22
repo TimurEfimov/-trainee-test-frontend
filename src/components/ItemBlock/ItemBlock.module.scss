@@ -1,14 +1,9 @@
-.img {
-  width: 72px;
-  height: 72px;
-  border-radius: 50px;
-}
-
 .person {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 4px;
+  color: var(--text-color);
 }
 
 .title {
@@ -24,13 +19,13 @@
 
   span {
     font-size: 14px;
-    opacity: 0.5;
+    opacity: var(--text-opacity);
   }
 }
 
 .info {
   p {
     font-size: 13px;
-    opacity: 0.6;
+    opacity: var(--text-opacity);
   }
 }

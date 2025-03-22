@@ -8,6 +8,7 @@ import star from "../../assets/star.svg";
 
 import styles from "./Profile.module.scss";
 import { useTranslation } from "react-i18next";
+import { Avatar } from "../../components/ItemBlock/Avatar";
 
 const calculateAge = (birthday: string) => {
   const today = new Date();
@@ -69,7 +70,12 @@ export const Profile: React.FC = () => {
           <img src={arrow} alt="" className={styles.arrow} />
         </Link>
         <div className={styles.content}>
-          <img src={user?.avatarUrl} alt="photo" />
+          <Avatar
+            src={user?.avatarUrl}
+            alt="photo"
+            name={user?.firstName}
+            size={104}
+          />
           <div>
             <h1>
               {user?.firstName} {user?.lastName}
@@ -91,7 +97,7 @@ export const Profile: React.FC = () => {
         </div>
         <div>
           <img src={call} alt="call" />
-          <a href={`tel:${user?.phone}`}>{user?.phone}</a>
+          <a href={`tel:${user?.phone}`} className={styles.phone}>{user?.phone}</a>
         </div>
       </div>
     </>

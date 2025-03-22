@@ -1,10 +1,25 @@
 body {
   font-family: "Inter", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-* {
-  box-sizing: border-box;
+[data-theme="light"] {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --text-opacity: 0.6;
+  --line-color: #c3c3c6;
+  --input-color: #f7f7f8;
 }
+
+[data-theme="dark"] {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --text-opacity: 0.6;
+  --line-color: #242121;
+  --input-color: #1e1e20;
+}
+
 .wrapper {
   padding: 8px 16px;
   padding-bottom: 0;
@@ -13,6 +28,6 @@ body {
 .line {
   border: 0;
   height: 1px;
-  background-color: #c3c3c6;
+  background-color: var(--line-color);
   margin: 0;
 }
