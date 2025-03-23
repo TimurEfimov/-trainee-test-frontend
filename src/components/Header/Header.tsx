@@ -8,10 +8,14 @@ import { itemsData } from "../../redux/slices/itemsSlice";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { toggleTheme } from "../../redux/slices/themeSlice";
+import { RootState } from "../../redux/store";
+import moon from "../../assets/moon.svg";
+import sun from "../../assets/sun.svg";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const { status } = useSelector(itemsData);
+  const theme = useSelector((state: RootState) => state.theme.theme);
   const { t } = useTranslation();
 
   const handleTheme = () => {
@@ -31,7 +35,7 @@ export const Header: React.FC = () => {
           <h1 className={styles.title}>{t("title")}</h1>
           <div className={styles.params}>
             <img
-              src="/images/theme.png"
+              src={theme === "light" ? moon : sun}
               alt="theme"
               className={styles.theme}
               onClick={handleTheme}

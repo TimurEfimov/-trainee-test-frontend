@@ -6,6 +6,7 @@ body {
 
 [data-theme="light"] {
   --background-color: #ffffff;
+  --profile-background: #f7f7f8;
   --text-color: #000000;
   --text-opacity: 0.6;
   --line-color: #c3c3c6;
@@ -14,6 +15,7 @@ body {
 
 [data-theme="dark"] {
   --background-color: #121212;
+  --profile-background: #1c1c1d;
   --text-color: #ffffff;
   --text-opacity: 0.6;
   --line-color: #242121;

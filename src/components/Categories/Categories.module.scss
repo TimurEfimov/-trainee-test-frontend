@@ -3,7 +3,18 @@
   align-items: center;
   padding: 8px 0 0 24px;
   font-size: 15px;
-  overflow: scroll;
+  overflow: auto;
+}
+
+@media (pointer: coarse) {
+  .ul {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 .li {
@@ -24,4 +35,5 @@
   margin: 0 12px;
   font-weight: 600;
   border-bottom: 2px solid #6534ff;
+  white-space: nowrap;
 }

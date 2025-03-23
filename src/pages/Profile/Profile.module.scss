@@ -1,5 +1,5 @@
 .main {
-  background-color: #f7f7f8;
+  background-color: var(--profile-background);
   padding: 24px;
   color: var(--text-color);
 }
@@ -22,7 +22,6 @@
   align-items: center;
   gap: 12px;
   padding-top: 72px;
-  color: #000000;
 
   div {
     display: flex;
